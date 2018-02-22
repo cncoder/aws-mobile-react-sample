@@ -4,13 +4,6 @@ Bootstrap a React application on AWS. This sample automatically provisions a Ser
 
 This starter uses the [AWS Amplify JavaScript library](https://github.com/aws/aws-amplify) to add cloud support to the application.
 
-### Quicklinks
- - [Getting started](#getstarted)
- - [Building and deploying](#builddeploy)
- - [Using Registration and Login components in your App](#reglogin)
- - [Using the REST client in your App](#restclient)
- - [Modifying Express routes in Lambda for your App](#lambdamodify)
-
 ## Backend Setup
 1. Set up your AWS resources using AWS Mobile Hub by clicking the button below:
 
@@ -26,6 +19,14 @@ This starter uses the [AWS Amplify JavaScript library](https://github.com/aws/aw
 3. Note your projects unique ID i.e. "05d550cb-ce2b-426a-a298-deb3c6630e4f". You can see this in the address bar:
 
 https://console.aws.amazon.com/mobilehub/home?region=us-east-1#/**YOUR-UNIQUE-PROJECT-ID-IS-HERE**/build
+
+### Quicklinks
+ - [Getting started](#getstarted)
+ - [Building and deploying](#builddeploy)
+ - [Using Registration and Login components in your App](#reglogin)
+ - [Using the REST client in your App](#restclient)
+ - [Modifying Express routes in Lambda for your App](#lambdamodify)
+
 ### Architecture Overview
 
 You will be building a React application with User Registration & Sign-in that allows you to perform CRUD operations against a DynamoDB table by using an [Express](https://expressjs.com) application running in AWS Lambda. Lambda will be invoked by API Gateway using Proxy Integration with greedy paths that only authenticated users can access. The Express server is running with the [AWS Serverless Express framework](https://github.com/awslabs/aws-serverless-express).
