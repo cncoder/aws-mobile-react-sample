@@ -1,0 +1,92 @@
+--- !com.amazonaws.mobilehub.v0.Project
+apps:
+  web: !com.amazonaws.mobilehub.v0.AppDO {}
+uploads:
+  - !com.amazonaws.mobilehub.v0.Upload
+    fileName: lambda-archive.zip
+    targetS3Bucket: deployments
+features:
+  cloudlogic: !com.amazonaws.mobilehub.v0.CloudLogic
+    components:
+      ReactSample: !com.amazonaws.mobilehub.v0.API
+        attributes:
+          name: ReactSample
+          requires-signin: true
+        paths:
+          /items: !com.amazonaws.mobilehub.v0.Function
+            name: ReactSample
+            codeFilename: uploads/lambda-archive.zip
+            handler: lambda.handler
+            enableCORS: true
+            runtime: nodejs6.10
+            environment:
+              MENU_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_menu_item
+              ORDERS_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_orders
+              RESTAURANTS_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_restaurants
+          "/items/{proxy+}": !com.amazonaws.mobilehub.v0.Function
+            name: ReactSample
+            codeFilename: uploads/lambda-archive.zip
+            handler: lambda.handler
+            enableCORS: true
+            runtime: nodejs6.10
+            environment:
+              MENU_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_menu_item
+              ORDERS_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_orders
+              RESTAURANTS_TABLE_NAME: ___DYNAMIC_PREFIX___-bbq_restaurants
+  content-delivery: !com.amazonaws.mobilehub.v0.ContentDelivery
+    attributes:
+      enabled: true
+      visibility: public-global
+    components:
+      release: !com.amazonaws.mobilehub.v0.Bucket {}
+  database: !com.amazonaws.mobilehub.v0.Database
+    components:
+      database-nosql: !com.amazonaws.mobilehub.v0.NoSQLDatabase
+        tables:
+          - !com.amazonaws.mobilehub.v0.NoSQLTable
+            attributes:
+              id: S
+            hashKeyName: id
+            hashKeyType: S
+            rangeKeyName: ""
+            rangeKeyType: ""
+            tableName: ___DYNAMIC_PREFIX___-bbq_restaurants
+            tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable
+            attributes:
+              id: S
+            hashKeyName: id
+            hashKeyType: S
+            rangeKeyName: ""
+            rangeKeyType: ""
+            tableName: ___DYNAMIC_PREFIX___-bbq_orders
+            tablePrivacy: public
+          - !com.amazonaws.mobilehub.v0.NoSQLTable
+            attributes:
+              id: S
+              restaurant_id: S
+            hashKeyName: restaurant_id
+            hashKeyType: S
+            rangeKeyName: id
+            rangeKeyType: S
+            tableName: ___DYNAMIC_PREFIX___-bbq_menu_item
+            tablePrivacy: public
+  sign-in: !com.amazonaws.mobilehub.v0.SignIn
+    attributes:
+      enabled: true
+      optional-sign-in: false
+    components:
+      sign-in-user-pools: !com.amazonaws.mobilehub.v0.UserPoolsIdentityProvider
+        attributes:
+          alias-attributes:
+            - email
+          mfa-configuration: OFF
+          name: userpool
+          password-policy: !com.amazonaws.mobilehub.ConvertibleMap
+            min-length: "6"
+            require-lower-case: false
+            require-numbers: false
+            require-symbols: false
+            require-upper-case: false
+name: React Sample
+region: us-east-1
